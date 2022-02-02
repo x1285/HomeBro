@@ -1,0 +1,96 @@
+<!-- CreationFormBuilder's HTML -->
+<script>
+	function addMultiple(element){
+		var container = element.parentNode.parentNode;
+		var first = container.getElementsByClassName("firstElement")[0];
+		var clone = first.cloneNode(true);
+		clone.childNodes.forEach(function(child){
+			try {
+				child.value = null;
+			} catch (e) {
+				console.log(e);
+			}
+		});
+		clone.classList.remove("firstElement");
+		clone.children[0].remove();
+		clone.insertBefore(createRemoveButton(), clone.firstChild);
+		container.appendChild(clone);
+		return false;
+	}
+
+	function removeMultiple(element){
+		var multiple = element.parentNode;
+		multiple.parentNode.removeChild(multiple);
+		return false;
+	}
+
+	function createRemoveButton() {
+		var button = document.createElement("button");
+		button.innerHTML = "";
+		button.classList.add("withIcon", "remove", "red");
+		button.onclick = function() { removeMultiple(button); };
+		return button;
+	}
+</script>
+<style>
+	button.withIcon.create:before {
+		content: "\e81e";
+	}
+
+	button.withIcon.save:before {
+		content: "\e87f";
+	}
+
+	button.withIcon.execute:before {
+		content: "\e84b";
+	}
+
+	button.withIcon.copy:before {
+		content: "\e815";
+	}
+
+	button.withIcon.add:before {
+		content: "\e881";
+	}
+
+	button.withIcon.edit:before {
+		content: "\e802";
+	}
+
+	button.withIcon.remove:before {
+		content: "\e882";
+	}
+
+    button.withIcon.close:before {
+        content: "\e880";
+    }
+
+	button.withIcon.delete:before {
+		content: "\e811";
+	}
+
+	button.withIcon.up:before {
+		content: "\e887";
+	}
+
+	button.withIcon.down:before {
+		content: "\e888";
+	}
+
+    button.withIcon.magic:before {
+        content: "\e803";
+    }
+
+    button.withIcon.select:before {
+        content: "\e852";
+    }
+
+	div.multiple, div.multipleElement {
+		display: block;
+	}
+	
+	div.multiple div.multipleElement button:first-child {
+    	display: block;
+	}
+</style>
+<!-- End of CreationFormBuilder's HTML -->

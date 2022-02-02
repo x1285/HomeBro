@@ -1,0 +1,73 @@
+<!-- DynamicThemeChanger's HTML -->
+<style>
+	#bg {
+		position:fixed;
+		top:-2.5vh;
+		left:-2.5vw;
+		z-index: -1;
+		filter: blur(3px);
+		width: 105vw;
+		height: 105vh; 
+		background: #000;
+		background-position: center !important;
+		background-repeat: no-repeat !important;
+		background-size: cover !important;
+		opacity: 0.4;
+		transition: background 1s;
+	}
+</style>
+<script>
+	window.addEventListener("load", function() { requestBackgroundUpdate();});
+
+	function queueRequestBackgroundUpdate(seconds) {
+		setTimeout(function(){ requestBackgroundUpdate(); }, seconds * 1000);
+	} 
+
+	function requestBackgroundUpdate(){
+		var xhr = new XMLHttpRequest();
+		xhr.open("GET", "http://openhabianpi:8080/rest/items/HomeBroBackgroundImageUrl/state");
+		xhr.addEventListener("loadstart", function() { onRequestBackgroundUpdateXhrStart(xhr); } );
+		xhr.addEventListener("load", function() { onRequestBackgroundUpdateXhrSuccess(xhr); } );
+		xhr.addEventListener("error", function() { onRequestBackgroundUpdateXhrError(xhr); } );
+		xhr.addEventListener("loadend", function() { onRequestBackgroundUpdateXhrLoadEnd(xhr); } );
+		xhr.send();
+	}
+
+	function onRequestBackgroundUpdateXhrStart(xhr) {
+		//console.log("requestBackgroundUpdate started");
+	}
+
+	function onRequestBackgroundUpdateXhrLoadEnd(xhr) {
+		//console.log("requestBackgroundUpdate ended");
+		queueRequestBackgroundUpdate(15);
+	}
+
+	function onRequestBackgroundUpdateXhrError(xhr) {
+		if (xhr.status !== undefined && xhr.status > 299) {
+			alert("Error on xhr:\n" + xhr.statusText + "\n" + xhr.responseText);
+		} else {
+			console.error("Unknown error ("+xhr.status+") on xhr:\n"+xhr.statusText+"\nResponse text:\n\""+xhr.responseText+"\"");
+		}
+	}
+
+	function onRequestBackgroundUpdateXhrSuccess(xhr) {
+		try {
+			var response = xhr.responseText;
+			if (response === null || response.length == 0 || response.toUpperCase() === "NULL") {
+				setBackground("#000");
+			} else {
+				setBackground("url("+response+")");
+			}
+		} catch (e) {
+			var errorText = "Could not processing pull response:\n"+xhr.responseText;
+			console.error(errorText);
+			console.log(e);
+			alert(errorText);
+		}
+	}
+
+	function setBackground(value) {
+		document.getElementById("bg").style.background = value;
+	}
+</script>
+<!-- End of DynamicThemeChanger's HTML -->

@@ -1,0 +1,212 @@
+<!-- ActionButtonManager's HTML -->
+<script>
+	var openedIframeCloseableTimeout = undefined;
+
+	window.addEventListener("load", function() { queueRequestActionButtonUpdate(3); });
+
+	function queueRequestActionButtonUpdate(seconds) {
+		setTimeout(function(){ requestActionButtonUpdate(); }, seconds * 1000);
+	} 
+
+	function requestActionButtonUpdate(){
+		var xhr = new XMLHttpRequest();
+		xhr.open("GET", "./pull.php?actionButtonUpdateRequest&notificationsPull");
+		xhr.addEventListener("loadstart", function() { onRequestActionButtonUpdateXhrStart(xhr); } );
+		xhr.addEventListener("load", function() { onRequestActionButtonUpdateXhrSuccess(xhr); } );
+		xhr.addEventListener("error", function() { onRequestActionButtonUpdateXhrError(xhr); } );
+		xhr.addEventListener("loadend", function() { onRequestActionButtonUpdateXhrLoadEnd(xhr); } );
+		xhr.send();
+	}
+
+	function onRequestActionButtonUpdateXhrStart(xhr) {
+		//console.debug("requestActionButtonUpdate started");
+	}
+
+	function onRequestActionButtonUpdateXhrLoadEnd(xhr) {
+		//console.debug("requestActionButtonUpdate ended");
+		queueRequestActionButtonUpdate(3);
+	}
+
+	function onRequestActionButtonUpdateXhrError(xhr) {
+		if (xhr.status !== undefined && xhr.status > 299) {
+			alert("Error on xhr:\n" + xhr.statusText + "\n" + xhr.responseText);
+		} else {
+			console.error("Unknown error ("+xhr.status+") on xhr:\n"+xhr.statusText+"\nResponse text:\n\""+xhr.responseText+"\"");
+		}
+	}
+
+	function onRequestActionButtonUpdateXhrSuccess(xhr) {
+		try {
+			var responseObj = JSON.parse(xhr.responseText);
+			processPullResponseObject(responseObj);
+		} catch (e) {
+			var errorText = "Could not processing pull response:\n"+xhr.responseText;
+			console.error(errorText);
+			console.error(e);
+			alert(errorText);
+		}
+	}
+
+	function processPullResponseObject(obj) {
+		//console.log("Processing processPullResponse:");
+		//console.log(obj);
+		if (obj === undefined || !Array.isArray(obj) || obj.length === 0) {
+			console.debug("Empty or unknown pull response object; processing stopped.");
+			return;
+		}
+		for (var i = 0; i < obj.length; i++) {
+			processResponseObject(obj[i]);
+		}
+	}
+
+	function findActionButtonsFor(updatebtn) {
+		if (updatebtn.htmlattributes === undefined || updatebtn.htmlattributes["data-actionButtonId"] === undefined) {
+			return [];
+		}
+		var actionButtonId = updatebtn.htmlattributes["data-actionButtonId"];
+		return document.querySelectorAll('[data-actionbuttonid="'+actionButtonId+'"]');	
+	}
+
+	function handleActionButtonClick(element, asXhr) {
+		var xhr = new XMLHttpRequest();
+		xhr.addEventListener("loadstart", function() { onActionButtonXhrStart(xhr, element); } );
+		xhr.addEventListener("load", function() { onActionButtonXhrSuccess(xhr, element); } );
+		xhr.addEventListener("error", function() { onActionButtonXhrError(xhr, element); } );
+		xhr.addEventListener("loadend", function() { onActionButtonXhrLoadEnd(xhr, element); } );
+
+		var data = new FormData();
+		data.append('actionButtonClick', element.dataset.actionbuttonid);
+
+		xhr.open("POST", "./", true);
+		xhr.send(data);
+
+		return false;
+	}
+
+	function onActionButtonXhrStart(xhr, element) {
+		element.disabled = true;
+		element.classList.add("load");
+	}
+
+	function onActionButtonXhrSuccess(xhr, element) {
+		try {
+			var responseObj = JSON.parse(xhr.responseText);
+    		processResponseObject(responseObj, element);
+		} catch (e) {
+			var errorText = "Could not processing button click response ("+element.innerText+"):\n"+xhr.responseText;
+			console.error(errorText);
+			console.error(e);
+			alert(errorText);
+		}
+	}
+
+	function onActionButtonXhrError(xhr, element) {
+		alert("Error on xhr:\n" + xhr.statusText + "\n" + xhr.responseText);
+	}
+
+	function onActionButtonXhrLoadEnd(xhr, element) {
+		element.classList.remove("load");
+		element.disabled = false;
+	}
+
+	function processResponseObject(obj) {
+		processResponseObject(obj, null);
+	}
+
+	function processResponseObject(obj, actionButton) {
+		console.debug("Processing response object:");
+		console.debug(obj);
+		if (obj.todo === undefined) {
+			console.debug("No todo found for response object; processing stopped.");
+			return;
+		}
+		if (obj.todo.updatebtn !== undefined) {
+			var elements = actionButton !== undefined ? [actionButton] : findActionButtonsFor(obj.todo.updatebtn);
+			for (var i = 0; i < elements.length; i++) {
+				elements[i].className = obj.todo.updatebtn.cssclasses.join(" ");
+				if (elements[i].innerHTML !== obj.todo.updatebtn.innerhtml && obj.todo.updatebtn.innerhtml !== undefined) {
+					elements[i].innerHTML = obj.todo.updatebtn.innerhtml;
+				}
+				//TODO: use obj.todo.updatebtn.htmlattributes.onclick
+			}
+		} else if (obj.todo.refresh !== undefined) {
+			window.location.href = window.location.href;
+		} else if (obj.todo.openiframe !== undefined) {
+			var src = obj.todo.openiframe.src;
+			if (src === undefined) {
+				removeOpenedIframe();
+				return;
+			}
+			var closeable = obj.todo.openiframe.closeable; //true,false,milliseconds
+			openIframe(src, closeable);
+		} else if (obj.todo.showmessage !== undefined) {
+            var title = obj.todo.showmessage.title;
+            var text = obj.todo.showmessage.text;
+            var buttontext = obj.todo.showmessage.buttontext;
+            var type = obj.todo.showmessage.type;
+            //todo
+        } else if (obj.notification !== undefined) {
+		    //todo
+		} else {
+			console.log("No automatic processing for response object:\n"+obj);
+		}
+	}
+
+	function openIframe(src, closeable) {
+		var openediframe = document.getElementById("openediframe");
+		if (openediframe !== null) {
+			removeOpenedIframe();
+		} else {
+			var overlay = document.getElementById("overlay");
+			
+		}
+		if (isNan(closeable)) {
+			if (closeable == true) {
+				stopOpenedIframeCloseableTimeout();
+				//closeable
+			} else if (closeable == false) {
+				stopOpenedIframeCloseableTimeout();
+				//not closeable
+			}
+			console.log("Unknown closeable object while processing openIframe: "+closeable);
+		} else {
+			stopOpenedIframeCloseableTimeout();
+			openedIframeCloseableTimeout = setTimeout(removeOpenedIframe, closeable);
+		}
+	}
+
+	function createIframeElement(src, showCloseButton) {
+		var element = document.createElement("div");
+		element.id = "openediframe";
+		if (showCloseButton === true) {
+			var closebtn = document.createElement("button");
+			closebtn.classList.add("closebtn");
+			closebtn.onclick = removeOpenedIframe();
+			element.appendChild(closebtn);
+		}
+
+		var iframe = document.createElement("iframe");
+		iframe.src = src;
+		element.appendChild(iframe);
+
+		return element;
+	}
+
+	function removeOpenedIframe() {
+		stopOpenedIframeCloseableTimeout();
+		var openediframe = document.getElementById("openediframe");
+		if (openediframe !== undefined) {
+			openediframe.remove();
+			return true;
+		}
+		return false;
+	}
+
+	function stopOpenedIframeCloseableTimeout() {
+		if (openedIframeCloseableTimeout !== undefined) {
+			clearTimeout(openedIframeCloseableTimeout);
+		}
+		openedIframeCloseableTimeout = undefined;
+	}
+</script>
+<!-- End of ActionButtonManager's HTML -->

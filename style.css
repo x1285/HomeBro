@@ -1,0 +1,373 @@
+:root {
+  --theme-color-red: #ff534e;
+  --theme-color-green: #58c775;
+  --theme-color-blue: #47b4e4;
+  --theme-color-orange: #e4bf47;
+}
+
+body {
+	background: black;
+	transition: filter 1s;
+}
+
+body, a {
+	text-decoration: none;
+	color: white;
+}
+
+body, button {
+	font-family: "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+*:focus {
+	outline: none;
+}
+
+th {
+	text-align: left;
+}
+
+.fr {
+	float: right;
+}
+
+.hide {
+	display: none !important;
+}
+
+.user-select-all {
+	user-select: all;
+}
+
+#overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 9999;
+	height: 100%;
+	width: 100%;
+	background: rgba(0,0,0,.2);
+	opacity: 0;
+	pointer-events: none;
+	transition: opacity 1s;
+}
+
+body.showOverlay {
+	filter: blur(2px);
+}
+
+body.showOverlay #overlay {
+	opacity: 1;
+	pointer-events: all;
+}
+
+#menu {
+	position: fixed;
+	left: calc(-80% - 20px);
+	top: 0;
+	min-width: 40%;
+	max-width: 80%;
+	height: 100%;
+	padding: 90px 20px 0px 20px;
+	z-index: 2;
+	background: #00000080;
+	box-shadow: 0 0 20px -5px #000;
+	transition: left 1s;
+	backdrop-filter: blur(7px);
+}
+
+#menubutton {
+	display: inline-block;
+	position: fixed;
+	top: 25px;
+	left: 20px;
+	z-index: 10;
+	-webkit-user-select: none;
+	user-select: none;
+}
+
+#menustate {
+	display: block;
+	position: fixed;
+	width: 70px;
+	height: 65px;
+	margin: 0;
+	top: 0;
+	left: 0;
+	cursor: pointer;
+	opacity: 0;
+	z-index: 12;
+	-webkit-touch-callout: none;
+}
+
+#menubutton span {
+	display: block;
+	width: 33px;
+	height: 4px;
+	margin-bottom: 5px;
+	position: relative;
+	background: #fff;
+	border-radius: 3px;
+	z-index: 11;
+	transform-origin: 4px 0px;
+	transition:	transform 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
+				background 0.5s cubic-bezier(0.77,0.2,0.05,1.0),
+				opacity 0.55s ease;
+}
+
+#menubutton span:first-child {
+	transform-origin: 0% 0%;
+}
+
+#menubutton span:nth-last-child(2) {
+	transform-origin: 0% 100%;
+}
+
+#menustate:checked + #menubutton span {
+	opacity: 0.5;
+}
+
+#menustate:checked + #menubutton span {
+	opacity: 1;
+	transform: rotate(45deg) translate(-10px, -15px);
+}
+
+#menustate:checked + #menubutton span:nth-last-child(3) {
+	opacity: 0;
+	transform: rotate(0deg) scale(0.2, 0.2);
+}
+
+#menustate:checked + #menubutton span:nth-last-child(2) {
+	transform: rotate(-45deg) translate(-4px, 10px);
+}
+
+#menustate:checked + #menubutton ~ #menu {
+	left: 0;
+}
+
+#main {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	margin-top: 80px;
+}
+
+header {
+	padding-bottom: 10px;
+	padding-top: 5px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 55px;
+    width: 100vw;
+    background: #ffffff3d;
+	backdrop-filter: blur(7px);
+	z-index: 10;
+}
+
+#homeBroHeader {
+	position: relative;
+	white-space: nowrap;
+	margin-left: 90px;
+}
+
+#homeBroHeader h1, h4, p {
+	position: relative;
+	margin: 0;
+}
+
+form p {}
+
+#homeBroHeader h1, h4 {
+	display: inline-block;
+}
+
+#homeBroHeader h4 {
+	position: absolute;
+	top: 33px;
+	left: 91px;
+	font-style: italic;
+}
+
+#homeBroHeader p {
+	top: -5px;
+	font-size: 7pt;
+	display: table;
+}
+
+summary {
+	cursor: pointer;
+	user-select: none;
+}
+
+details {
+	margin: 10px 0;
+}
+
+details > *:not(summary) {
+	margin-left: 20px;
+}
+
+details form {
+	overflow-y: auto;
+	max-height: 50%;
+}
+
+input[type="text"],
+input[type="url"],
+input[type="email"],
+input[type="number"],
+input[type="month"],
+input[type="number"],
+input[type="password"],
+input[type="range"],
+input[type="tel"],
+input[type="time"],
+input[type="week"] {
+	padding: 3px;
+	margin: 2px;
+}
+
+button, 
+a.button,
+input[type="submit"],
+input[type="button"],
+select {
+	background-color: rgba(255, 255, 255, 0.06);
+	backdrop-filter: blur(4px);
+	color: white;
+	border: none;
+	/*margin: 5px;*/
+	padding: 5px 15px;
+	border-radius: 5px;
+	box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.2);
+	cursor: pointer;
+	opacity: 1;
+	transition: all 1s;
+	display: inline-flex;
+	align-items: center;
+}
+
+select option {
+	background-color: #3b3b3b;
+}
+
+button[disabled], 
+a.button[disabled],
+input[type="submit"][disabled],
+input[type="button"][disabled],
+select[disabled],
+.load {
+	opacity: .3;
+	animation: opacitypulse 3s infinite ease-in-out 1s;
+	cursor: progress;
+	box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes opacitypulse {
+	0%, 100% { opacity: .3 }
+	50% { opacity: .5 }
+}
+
+.gridItem {
+	display: flex;
+	flex-wrap: wrap;
+	width: calc(50% - 23px);
+	margin: 10px;
+}
+
+.gridItem .gridItem, .ActionButtonWithSubButtons .gridItem {
+	margin: 0;
+	z-index: 1;
+}
+
+button.actionButton {
+	height: 70px;
+	text-align: left;
+	font-size: 1.2em;
+}
+
+@media (max-width: 900px) {
+	.gridItem {
+		display: flex;
+		width: 95%;
+		margin: 10px auto;
+	}
+	button.actionButton {
+		box-shadow: 0 0 4px 1px rgba(0, 0, 0, 0.2);
+	}
+}
+
+.showOnlyInSubButton {
+	display: none;
+}
+
+.ActionButtonWithSubButtons .showOnlyInSubButton {
+	display: initial;
+}
+
+div.gridItem.ActionButtonWithSubButtons button:first-child {
+    width: 100%;
+}
+
+div.gridItem.ActionButtonWithSubButtons button:not(:first-child) {
+	width: calc(50% - 20px);
+	height: 50px;
+	margin: 10px;
+	margin-top: -5px;
+	z-index: 0;
+}
+
+button.withIcon:before,
+button.actionButton:before,
+a.button:before {
+	display: flex;
+	max-width: 15%;
+	float: left;
+}
+
+button.withIcon:not(:empty):before,
+button.actionButton:not(:empty):before,
+a.button:not(:empty):before {
+	margin-right: 15px;
+}
+
+.green {
+	color: #58c775;
+	color: var(--theme-color-green);
+}
+
+.greenIcon:before {
+	color: #58c775;
+	color: var(--theme-color-green);
+}
+
+.red {
+	color: #ff534e;
+	color: var(--theme-color-red);
+}
+
+.redIcon:before {
+	color: #ff534e;
+	color: var(--theme-color-red);
+}
+
+.blue {
+	color: #47b4e4;
+	color: var(--theme-color-blue);
+}
+
+.blueIcon:before {
+	color: #47b4e4;
+	color: var(--theme-color-blue);
+}
+
+.orange {
+	color: #e4bf47;
+	color: var(--theme-color-orange);
+}
+
+.orangeIcon:before {
+	color: #e4bf47;
+	color: var(--theme-color-orange);
+}

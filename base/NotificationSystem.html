@@ -1,0 +1,61 @@
+<!-- NotificationSystem's HTML -->
+<style>
+    .notificationcenter {
+        position: absolute;
+        z-index: 3;
+        left: 0;
+        top: 64px;
+        padding-top: 1px;
+        width: 100%;
+        text-align: center;
+        pointer-events: none;
+    }
+
+    .notification {
+        display: block;
+        height: 40px;
+        line-height: 30px;
+        width: 100%;
+        max-width: 800px;
+        margin: auto;
+        animation: opacity 2s forwards ease-in-out 5s;
+        background: rgba(0, 0, 0, 0.75);
+        color: white;
+    }
+
+    .notification:first-child {
+        padding-top: 10px;
+        margin-top: -10px;
+    }
+
+    .notification:last-child {
+        border-radius: 0 0 10px 10px;
+    }
+
+    .notification.success {
+        background-color: var(--theme-color-green);
+    }
+
+    .notification.error {
+        background-color: var(--theme-color-red);
+    }
+
+    .notification > * {
+        display: inline-block;
+        margin: 6px;
+    }
+
+    .notificationtitle {
+        font-weight: bold;
+    }
+
+    @keyframes opacity {
+        0% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+        }
+    }
+</style>
+<!-- End of NotificationSystem's HTML -->
