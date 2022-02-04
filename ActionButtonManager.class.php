@@ -2,6 +2,7 @@
 
 require_once("ActionButton.class.php");
 require_once("StateDependingActionButton.class.php");
+require_once("PercentageStateActionButton.class.php");
 require_once("ActionButtonWithSubButtons.class.php");
 
 require_once("ActionManager.class.php");
@@ -15,6 +16,7 @@ class ActionButtonManager {
 	protected $ACTION_BUTTON_CLASSES = [
 									"ActionButton",
 									"StateDependingActionButton",
+									"PercentageStateActionButton",
 									"ActionButtonWithSubButtons"
 								];
 

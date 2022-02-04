@@ -44,11 +44,17 @@ class ActionButtonPrinter {
 			$innerHtml .= $this->createInnerHtml();
 		}
 
+		$innerPart = $innerHtml;
+		if ($this->actionButton instanceof PercentageStateActionButton) {
+			$state = $this->actionButton->getCurrentState();
+			$innerPart = sprintf("<progress class=\"%s\" max=\"100\" value=\"%s\"></progress>%s", "", $state, $innerHtml);
+		}
+
 		$html = sprintf("<%s class=\"%s\"%s>%s</%s>\n", 
 			$element,
 			$this->createCssClasses(), 
 			$this->createHtmlAttributes(), 
-			$innerHtml,
+			$innerPart,
 			$element);
 		return $html;
 	}
