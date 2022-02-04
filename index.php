@@ -103,6 +103,9 @@ $errorsAndWarnings = ob_get_clean();
 		?>
 		</style>
 		<link rel="stylesheet" type="text/css" href="icons/iconfont.css">
+		<?php if ($userSystem->isAuthSessionJustStarted()) { ?>
+			<script>window.onload = function() { window.history.pushState({}, document.title, "."); };</script>
+		<?php } ?>
 	</head>
 	<body>
 		<header>
