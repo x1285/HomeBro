@@ -22,8 +22,20 @@ if (isset($_POST["actionButtonClick"]) && is_numeric($_POST["actionButtonClick"]
 
 
 $aIdsToRun = [];
-$aIdsToRun[] = $_POST["runAction"];
-$aIdsToRun[] = $_GET["runAction"];
+if (isset($_POST["runAction"])) {
+	if (is_array($_POST["runAction"])) {
+		$aIdsToRun = array_merge($aIdsToRun, $_POST["runAction"]);
+	} else {
+		$aIdsToRun[] = $_POST["runAction"];
+	}
+}
+if (isset($_GET["runAction"])) {
+	if (is_array($_GET["runAction"])) {
+		$aIdsToRun = array_merge($aIdsToRun, $_GET["runAction"]);
+	} else {
+		$aIdsToRun[] = $_GET["runAction"];
+	}
+}
 foreach($aIdsToRun as $actionIds) {
 	if (isset($actionIds)) {
 		$actionIdsToRun = [];
