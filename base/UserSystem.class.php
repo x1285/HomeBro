@@ -46,17 +46,27 @@ class UserSystem {
     public function initialize() {
         $userFiles = glob($this->USER_LOCATION."*.{".$this->USER_MIME_TYPE."}", GLOB_BRACE);
         foreach($userFiles as $userFile){
-            $user = unserialize(file_get_contents($userFile));
+            $i = 5;
+            $user = null;
+            do {
+                $i--;
+                $user = unserialize(file_get_contents($userFile));
+                if ($user === null || empty($user) || is_bool($user)) {
+                    usleep(400);
+                } else {
+                    $i = 0;
+                }
+            } while ($i > 0);
             $this->users[$user->getId()] = $user;
         }
         $sessionFiles = glob($this->SESSION_LOCATION."*.{".$this->SESSION_MIME_TYPE."}", GLOB_BRACE);
         foreach($sessionFiles as $sessionFile){
-            $i = 3;
+            $i = 5;
             $session = null;
             do {
                 $i--;
                 $session = unserialize(file_get_contents($sessionFile));
-                if ($session === null || empty($session)) {
+                if ($session === null || empty($session) || is_bool($session)) {
                     usleep(400);
                 } else {
                     $i = 0;

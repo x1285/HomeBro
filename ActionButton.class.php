@@ -136,7 +136,11 @@ class ActionButton extends HasIdAndName {
 	}
 
 	public function getCssClasses() {
-		return $this->cssClasses;
+		$copy = $this->cssClasses;
+		if ($this->isHidden()) {
+			$copy[] = "hide";
+		}
+		return $copy;
 	}
 
 }

@@ -35,6 +35,10 @@ th {
 	display: none !important;
 }
 
+.noevents {
+	pointer-events: none;
+}
+
 .user-select-all {
 	user-select: all;
 }
@@ -149,6 +153,7 @@ body.showOverlay #overlay {
 	display: flex;
 	align-items: center;
 	flex-wrap: wrap;
+  align-items: flex-start;
 	margin-top: 80px;
 }
 
@@ -260,13 +265,62 @@ select[disabled],
 .load {
 	opacity: .3;
 	animation: opacitypulse 3s infinite ease-in-out 1s;
-	cursor: progress;
-	box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.1);
 }
 
 @keyframes opacitypulse {
 	0%, 100% { opacity: .3 }
 	50% { opacity: .5 }
+}
+
+button[disabled], 
+a.button[disabled],
+input[type="submit"][disabled],
+input[type="button"][disabled],
+select[disabled],
+.load,
+.pulsate {
+	cursor: progress;
+	box-shadow: 0 0 6px 2px rgba(0, 0, 0, 0.1);
+}
+
+.pulsate.red {
+	background-color:  rgba(255, 0, 0, 9%);
+	animation: opacitybackground-red 5s infinite ease-in-out 1s;
+}
+
+@keyframes opacitybackground-red {
+	0%, 100% { background-color:  rgba(255, 0, 0, 9%) }
+	50% { background-color:  rgba(255, 0, 0, 18%) }
+}
+
+.pulsate.green {
+	background-color:  rgba(0, 255, 0, 9%);
+	animation: opacitybackground-green 5s infinite ease-in-out 1s;
+}
+
+@keyframes opacitybackground-green {
+	0%, 100% { background-color:  rgba(0, 255, 0, 9%) }
+	50% { background-color:  rgba(0, 255, 0, 18%) }
+}
+
+.pulsate.blue {
+	background-color:  rgba(0, 0, 255, 9%);
+	animation: opacitybackground-blue 5s infinite ease-in-out 1s;
+}
+
+@keyframes opacitybackground-blue {
+	0%, 100% { background-color:  rgba(0, 0, 255, 9%) }
+	50% { background-color:  rgba(0, 0, 255, 18%) }
+}
+
+.pulsate.orange {
+	background-color:  rgba(228, 191, 71, 9%);
+	animation: opacitybackground-orange 5s infinite ease-in-out 1s;
+}
+
+@keyframes opacitybackground-orange {
+	0%, 100% { background-color:  rgba(228, 191, 71, 9%) }
+	50% { background-color:  rgba(228, 191, 71, 18%) }
 }
 
 .gridItem {
@@ -316,6 +370,10 @@ div.gridItem.ActionButtonWithSubButtons button:not(:first-child) {
 	margin: 10px;
 	margin-top: -5px;
 	z-index: 0;
+}
+
+div.gridItem.ActionButtonWithSubButtons button:last-child:nth-child(even) {
+	width: 100%;
 }
 
 button.withIcon:before,

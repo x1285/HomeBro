@@ -25,6 +25,9 @@ class XhrResponseBuilder {
 				$innerhtml = $printer->createInnerHtml();
 				$updatebtn["innerhtml"] = $innerhtml;
 			}
+			if ($obj instanceof StateDependingActionButton) {
+				$updatebtn["state"] = $obj->getCurrentState();
+			}
 			$todo = ["updatebtn" => $updatebtn];
 			$builder->add("todo", $todo);
 		} else if (is_a($obj, "Notification")) {

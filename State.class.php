@@ -12,10 +12,8 @@ class State extends HasIdAndName {
 
 		$this->setStates($states);
 
-		if ($state === null) {
+		if ($state === null || !setState($state)) {
 			$this->state = $this->states[0];
-		} else {
-			$this->state = $state;
 		}
 	}
 
@@ -25,6 +23,9 @@ class State extends HasIdAndName {
 
 		$builder->addLabel("stateName", "Name");
 		$builder->addInput("stateName", "text", is_null($state) ? null : $state->getName());
+
+		$builder->addLabel("state", "Aktueller Zustand");
+		$builder->addInput("state", "text", is_null($state) ? null : $state->getState());
 
 		if($state === null) {
 			$builder->startMultipleFirst();
@@ -52,7 +53,11 @@ class State extends HasIdAndName {
 		if (isset($response["stateId"]) && is_numeric($response["stateId"])) {
 			$stateId = $response["stateId"];
 		}
-		return new State($stateId, $response["stateName"], $response["states"]);
+		$state = new State($stateId, $response["stateName"], $response["states"]);
+		if (isset($response["state"])) {
+			$state->setState($response["state"]);
+		}
+		return $state;
 	}
 
 	final public function addState($newState = null){

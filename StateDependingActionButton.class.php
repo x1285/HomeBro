@@ -11,7 +11,7 @@ class StateDependingActionButton extends ActionButton {
 	public function __construct($id, $name, $actionId = null, $stateId = null) {
 		parent::__construct($id, $name, $actionId);
 		if (is_null($actionId) || !is_numeric($actionId)) {
-			die("StateDependingActionButton needs a numeric actionId as constructor parameter.");
+			die(get_class() . " needs a numeric actionId as constructor parameter.");
 		}
 		$this->setStateId($stateId);
 	}
@@ -149,7 +149,7 @@ class StateDependingActionButton extends ActionButton {
 	public function setStateId($stateId = null) {
 		$state = StateManager::get()->getStateById($stateId);
 		if (is_null($stateId) || !is_numeric($stateId)) {
-			die(sprintf("StateDependingActionButton needs a numeric stateId, but '%s' given.", $stateId));
+			die(sprintf(get_class() . " needs a numeric stateId, but '%s' given.", $stateId));
 		}
 		$this->stateId = $stateId;
 		

@@ -106,8 +106,14 @@ class ActionButtonPrinter {
 
 	public function createHtmlForSubButtons($subButtonIds) {
 		$html = "";
+		$subButtons = [];
 		foreach ($subButtonIds as $subButtonId) {
-			$subButton = ActionButtonManager::get()->getActionButtonById($subButtonId);
+			$subButtons[] = ActionButtonManager::get()->getActionButtonById($subButtonId);
+		}
+		usort($subButtons, function($a, $b) {
+			return strcmp($a->getSortValue() . $a->getId(), $b->getSortValue() . $b->getId());
+		});
+		foreach ($subButtons as $subButton) {
 			$printer = new ActionButtonPrinter($subButton);
 			$html .= $printer->createHtml();
 		}

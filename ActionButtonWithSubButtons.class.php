@@ -77,6 +77,15 @@ class ActionButtonWithSubButtons extends ActionButton {
 		return $actionButton;
 	}
 
+	//OVERRIDE
+	public function getCssClasses() {
+		$activeCssClasses = parent::getCssClasses();
+		if (in_array("hide", $this->getPrimaryButton()->getCssClasses())) {
+			$activeCssClasses[] = "hide";
+		}
+		return $activeCssClasses;
+	}
+
 	public function setPrimaryButtonId($primaryButtonId) {
 		$this->primaryButtonId = $primaryButtonId;
 	}

@@ -233,6 +233,9 @@ $errorsAndWarnings = ob_get_clean();
 				<form action="?" method="POST">
 <?php
 					$states = StateManager::get()->getStates();
+					usort($states, function($a, $b) {
+						return strcmp($a->getName(), $b->getName());
+					});
 					foreach ($states as $id => $state) {
 						echo sprintf("<p>\n\t<b>%s</b><br />", $state->getName());
 						echo sprintf("<i>%s - %s</i><br />", get_class($state), $state->getState());;
