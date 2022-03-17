@@ -78,6 +78,7 @@ body.showOverlay #overlay {
 	box-shadow: 0 0 20px -5px #000;
 	transition: left 1s;
 	backdrop-filter: blur(7px);
+	-webkit-backdrop-filter: blur(7px);
 }
 
 #menubutton {
@@ -167,6 +168,7 @@ header {
     width: 100vw;
     background: #ffffff3d;
 	backdrop-filter: blur(7px);
+	-webkit-backdrop-filter: blur(7px);
 	z-index: 10;
 }
 
@@ -240,6 +242,7 @@ input[type="button"],
 select {
 	background-color: rgba(255, 255, 255, 0.06);
 	backdrop-filter: blur(4px);
+	-webkit-backdrop-filter: blur(4px);
 	color: white;
 	border: none;
 	/*margin: 5px;*/
