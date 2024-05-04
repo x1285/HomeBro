@@ -29,7 +29,7 @@
 
 	function onRequestActionButtonUpdateXhrError(xhr) {
 		if (xhr.status !== undefined && xhr.status > 299) {
-			alert("Error on xhr:\n" + xhr.statusText + "\n" + xhr.responseText);
+            showError("Error", "Error on xhr:\n" + xhr.statusText + "\n" + xhr.responseText);
 		} else {
 			console.error("Unknown error ("+xhr.status+") on xhr:\n"+xhr.statusText+"\nResponse text:\n\""+xhr.responseText+"\"");
 		}
@@ -43,7 +43,7 @@
 			var errorText = "Could not processing pull response:\n"+xhr.responseText;
 			console.error(errorText);
 			console.error(e);
-			alert(errorText);
+            showError("Error", errorText);
 		}
 	}
 
@@ -96,18 +96,22 @@
 			var errorText = "Could not processing button click response ("+element.innerText+"):\n"+xhr.responseText;
 			console.error(errorText);
 			console.error(e);
-			alert(errorText);
+            showError("Error", errorText);
 		}
 	}
 
 	function onActionButtonXhrError(xhr, element) {
-		alert("Error on xhr:\n" + xhr.statusText + "\n" + xhr.responseText);
+        showError("Error", "Error on xhr:\n" + xhr.statusText + "\n" + xhr.responseText);
 	}
 
 	function onActionButtonXhrLoadEnd(xhr, element) {
 		element.classList.remove("load");
 		element.disabled = false;
 	}
+
+    function showError(title, text) {
+        addNotification(title, text, ["error"]);
+    }
 
 	function processResponseObject(obj) {
 		processResponseObject(obj, null);

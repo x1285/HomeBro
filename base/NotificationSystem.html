@@ -2,6 +2,8 @@
 <style>
     .notificationcenter {
         position: absolute;
+        display: flex;
+        flex-flow: column-reverse;
         z-index: 3;
         left: 0;
         top: 64px;
@@ -58,4 +60,30 @@
         }
     }
 </style>
+<script>
+    function addNotification(title, text, classes) {
+        var notificationCenters = document.getElementsByClassName("notificationcenter");
+        for (let i = 0; i < notificationCenters.length; i++) {
+            var nc = notificationCenters[i];
+
+            var div = document.createElement("div");
+            div.classList.add("notification");
+
+            var titleDiv = document.createElement("div");
+            titleDiv.classList.add("notificationtitle");
+            for (let j = 0; j < classes.length; j++) {
+                titleDiv.classList.add(classes[j]);
+            }
+            titleDiv.innerText = title;
+
+            var textDiv = document.createElement("div");
+            textDiv.classList.add("notificationtext");
+            textDiv.innerText = text;
+
+            div.appendChild(textDiv);
+            div.appendChild(titleDiv);
+            nc.appendChild(div);
+        }
+    }
+</script>
 <!-- End of NotificationSystem's HTML -->
